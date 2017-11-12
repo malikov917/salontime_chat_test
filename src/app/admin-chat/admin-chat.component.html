@@ -1,0 +1,33 @@
+<div class="col-6">
+  <h1>Email list</h1>
+  <ul *ngFor="let email of emailList">
+    <li (click)="emailFilter$.next(email.email)">
+      <br>
+      {{email.email}}
+    </li>
+  </ul>
+</div>
+
+<div class="col-6" *ngIf="email">
+  <h1>As admin</h1>
+  <textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>
+  <input type="submit" value="Add a Post as Admin" (click)="addPostBySeller()">
+  <ul *ngFor="let post of adminPosts | async">
+    <li [ngClass]="{'seller': post.person === 'seller'}">
+      <br>
+      {{post.content}}
+    </li>
+  </ul>
+</div>
+
+<div class="col-6" *ngIf="email">
+  <h1>As user</h1>
+  <textarea [(ngModel)]="contentCustomer" name="content" placeholder="Content.."></textarea>
+  <input type="submit" value="Add a Post as Customer" (click)="addPostByCustomer()">
+  <ul *ngFor="let post of adminPosts | async">
+    <li [ngClass]="{'seller': post.person === 'customer'}">
+      <br>
+      {{post.content}}
+    </li>
+  </ul>
+</div>
