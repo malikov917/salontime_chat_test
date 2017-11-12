@@ -12,6 +12,7 @@ import {Email, Post} from '../app.component';
   styleUrls: ['./admin-chat.component.css']
 })
 export class AdminChatComponent implements OnInit {
+  adminPostsCol: AngularFirestoreCollection<Post>;
   adminPosts: Observable<Post[]>;
   emailFilter$: Subject<string | null>;
   content: string;
@@ -27,11 +28,12 @@ export class AdminChatComponent implements OnInit {
 
     this.emailFilter$.subscribe(email => {
       this.email = email;
-      this.adminPosts = this.afs.collection('posts', ref => {
+      this.adminPostsCol = this.afs.collection('posts', ref => {
         let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         query = query.where('email', '==', email).orderBy('timeStamp');
         return query;
-      }).valueChanges()
+      });
+      this.adminPosts = this.adminPostsCol.valueChanges()
     })
   }
 
